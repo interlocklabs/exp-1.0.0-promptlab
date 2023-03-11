@@ -1,38 +1,65 @@
-.App {
-  text-align: center;
+/* top right bottom left */
+
+.controller {
+  padding: 14px 20px 14px 20px;
+  margin: 10px;
+  border: 1px solid rgba(204, 204, 204, .8);
+  border-radius: 15px;
+  background: none;
+  font-size: 20px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.llmbox {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  width: 50%;
+  border: 2px solid #ccc;
+  border-radius: 15px;
+  margin-top: 25px;
+  margin-left: 25px;
+  padding: 20px
 }
 
-.App-link {
-  color: #61dafb;
+form {
+  display: flex;
+  flex-direction: column;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#prev, textarea, input[type="submit"] {
+  outline: none;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 20px;
+  font-family: 'Ubuntu Mono', monospace;
+  padding: 10px 15px 10px 15px;
+}
+
+textarea {
+  width: 93%;
+  resize: vertical;
+}
+
+#prev, input[type="submit"] {
+  width: 50%;
+  margin-top: 10px;
+}
+
+input[type="submit"] {
+  background: #aaa;
+  color: rgba(255, 255, 255, 1);
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.llmbox:last-child {
+  margin-bottom: 225px;
+}
+
+.res {
+  outline: none;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 20px;
+  font-family: 'Ubuntu Mono', monospace;
+  padding: 10px 15px 10px 15px;
 }

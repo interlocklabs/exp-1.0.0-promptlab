@@ -45,20 +45,19 @@ const Child = (props) => {
 
   return (<div className="llmbox">
     <h1>LLM Call {props.number + 1}</h1>
-    <p>Latest output: {props.prev === "" ? "Nothing" : props.prev}</p>
+    <h2>Latest output: </h2>
+    <p className="res">{props.prev === "" ? "Nothing" : props.prev}</p>
     <form onSubmit={handleSubmit}>
       <label>
-        Prompt:
-        <input type="text" name="prompt" value={prompt} onChange={handleChange} />
+        <h2>Prompt:</h2>
+        <textarea name="prompt" value={prompt} onChange={handleChange} />
       </label>
-      <br />
-      <button onClick={handlePrev}>Prev. Output</button>
-      <br />
+      <button id="prev" onClick={handlePrev}>&lt;Insert Previous Output&gt;</button>
       <input type="submit" value="Submit" />
     </form>
     <div>
       <h2>Result</h2>
-      {result === "" ? <p>Waiting for result</p> : <p>{result}</p>}
+      <p className="res">{result === "" ? "Waiting for result" : result}</p>
     </div>
 
   </div>);
@@ -68,8 +67,8 @@ const Parent = (props) => {
   return (
     <div>
       <div>
-        <button onClick={props.addFn}>Add LLM Call</button>
-        <button onClick={props.remFn}>Remove LLM Call</button>
+        <button className="controller" onClick={props.addFn}>Add LLM Call</button>
+        <button className="controller" onClick={props.remFn}>Remove LLM Call</button>
         
       </div>
       <div>
