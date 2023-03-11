@@ -15,7 +15,7 @@ const Child = (props) => {
     const config = {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`
+        'Authorization': `Bearer ${props.API_key}`
       }
     }
     const data = {
@@ -52,7 +52,8 @@ const Child = (props) => {
         <h2>Prompt:</h2>
         <textarea name="prompt" value={prompt} onChange={handleChange} />
       </label>
-      <button id="prev" onClick={handlePrev}>&lt;Insert Previous Output&gt;</button>
+      
+      <button id="prev" onClick={handlePrev}>&lt;|Insert Previous Output|&gt;</button>
       <input type="submit" value="Submit" />
     </form>
     <div>
@@ -81,7 +82,12 @@ const Parent = (props) => {
 const App = () => {
   const [numChildren, setNumChildren] = useState(1);
   const [lastResult, setLastResult] = useState("");
-  
+  const [API_key , setAPI_key] = useState("");
+
+  const handleKeyChange = (event) => {
+    setAPI_key(event.target.value);
+  };
+
   const addLlmBox = (event) => {
     setNumChildren(numChildren + 1);
   }
@@ -94,15 +100,23 @@ const App = () => {
   let children = [];
 
   for (var i = 0; i < numChildren; i += 1) {
-    children.push(<Child key={i} number={i} prev={lastResult} res={setLastResult} />);
+    children.push(<Child key={i} number={i} prev={lastResult} res={setLastResult}  API_key={API_key} />);
   };
 
   // setChildLiterals(children);
 
   return (
+    <div>
+    <div className="api_key">
+      <label>
+        <h2>OpenAI API Key:</h2>
+        <input name="apikey" value={API_key} onChange={handleKeyChange} />
+      </label>
+    </div>
     <Parent addFn={addLlmBox} remFn={remLlmBox} >
       {children}
     </Parent>
+    </div>
   );
 }
 

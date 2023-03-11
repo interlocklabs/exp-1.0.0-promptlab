@@ -3,6 +3,7 @@
 .controller {
   padding: 14px 20px 14px 20px;
   margin: 10px;
+  margin-left: 25px;
   border: 1px solid rgba(204, 204, 204, .8);
   border-radius: 15px;
   background: none;
@@ -25,7 +26,7 @@ form {
   flex-direction: column;
 }
 
-#prev, textarea, input[type="submit"] {
+#prev, textarea, input[type="submit"], input[name="apikey"] {
   outline: none;
   border: 2px solid #ccc;
   border-radius: 5px;
@@ -37,6 +38,10 @@ form {
 textarea {
   width: 93%;
   resize: vertical;
+}
+
+input[name="apikey"] {
+  width: 93%;
 }
 
 #prev, input[type="submit"] {
@@ -62,4 +67,8 @@ input[type="submit"] {
   font-size: 20px;
   font-family: 'Ubuntu Mono', monospace;
   padding: 10px 15px 10px 15px;
+}
+
+.api_key {
+  margin: 25px;
 }
