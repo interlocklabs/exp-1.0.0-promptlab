@@ -22,7 +22,7 @@ const Child = (props) => {
       prompt: prompt,
       model: 'text-davinci-003',
       temperature: 0,
-      max_tokens: 10
+      max_tokens: 2048
     }
     const url = 'https://api.openai.com/v1/completions'
     axios.post(url, data, config)
