@@ -110,8 +110,6 @@ const App = () => {
     children.push(<Child key={i} number={i} prev={lastResult} res={setLastResult}  API_key={API_key} />);
   };
 
-  ReactGA.send({ hitType: "pageview", page: "/prompt-lab", title: "v1-j-s-pb" });
-
   return (
     <div>
       <div id="contact">
