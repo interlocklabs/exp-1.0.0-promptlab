@@ -37,7 +37,7 @@ form {
   flex-direction: column;
 }
 
-#prev, textarea, input[type="submit"], input[name="apikey"] {
+#prev, .textarea, input[type="submit"], input[name="apikey"] {
   outline: none;
   border: 2px solid #ccc;
   border-radius: 5px;
@@ -46,9 +46,9 @@ form {
   padding: 10px 15px 10px 15px;
 }
 
-textarea {
+.textarea {
   width: 93%;
-  resize: vertical;
+  /* resize: vertical; */
 }
 
 input[name="apikey"] {

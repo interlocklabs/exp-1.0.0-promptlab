@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import TextareaAutosize from 'react-textarea-autosize';
 import axios from 'axios';
 import ReactGA from "react-ga4";
 
@@ -56,7 +57,9 @@ const Child = (props) => {
     <form onSubmit={handleSubmit}>
       <label>
         <h2>Prompt:</h2>
-        <textarea name="prompt" value={prompt} onChange={handleChange} />
+        {/* <textarea name="prompt" value={prompt} onChange={handleChange} /> */}
+        <TextareaAutosize className="textarea" name="prompt" value={prompt} onChange={handleChange} />
+        
       </label>
       
       <button id="prev" onClick={handlePrev}>Insert Most Recent Output</button>
@@ -66,7 +69,7 @@ const Child = (props) => {
       <h2>Result</h2>
       <p className="res">{result === "" ? "Waiting for result..." : result}</p>
     </div>
-    <h2>Latest output: </h2>
+    <h2>Most recent output: </h2>
     <p className="res">{props.prev === "" ? "No calls have been executed." : props.prev}</p>
 
   </div>);
