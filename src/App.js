@@ -53,21 +53,21 @@ const Child = (props) => {
 
   return (<div className="llmbox">
     <h1>LLM Call {props.number + 1}</h1>
-    <h2>Latest output: </h2>
-    <p className="res">{props.prev === "" ? "Nothing" : props.prev}</p>
     <form onSubmit={handleSubmit}>
       <label>
         <h2>Prompt:</h2>
         <textarea name="prompt" value={prompt} onChange={handleChange} />
       </label>
       
-      <button id="prev" onClick={handlePrev}>&lt;|Insert Previous Output|&gt;</button>
+      <button id="prev" onClick={handlePrev}>Insert Most Recent Output</button>
       <input type="submit" value="Submit" />
     </form>
     <div>
       <h2>Result</h2>
-      <p className="res">{result === "" ? "Waiting for result" : result}</p>
+      <p className="res">{result === "" ? "Waiting for result..." : result}</p>
     </div>
+    <h2>Latest output: </h2>
+    <p className="res">{props.prev === "" ? "No calls have been executed." : props.prev}</p>
 
   </div>);
 }
@@ -75,9 +75,9 @@ const Child = (props) => {
 const Parent = (props) => {
   return (
     <div>
-      <div>
-        <button className="controller" onClick={props.addFn}>Add LLM Call</button>
-        <button className="controller" onClick={props.remFn}>Remove LLM Call</button>
+      <div className="controller-container">
+        <button className={["add", "controller"].join(' ')} onClick={props.addFn}>Add LLM Call</button>
+        <button className={["remove", "controller"].join(' ')} onClick={props.remFn}>Remove LLM Call</button>
         
       </div>
       <div>

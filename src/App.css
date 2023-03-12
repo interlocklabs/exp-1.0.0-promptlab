@@ -6,8 +6,19 @@
   margin-left: 25px;
   border: 1px solid rgba(204, 204, 204, .8);
   border-radius: 15px;
-  background: none;
   font-size: 20px;
+}
+
+.add {
+  background: #c9f29b;
+  color:#191919;
+  font-weight: bold;
+}
+
+.remove {
+  background: #ff9478;
+  color: #191919;
+  font-weight: bold;
 }
 
 .llmbox {
@@ -41,7 +52,7 @@ textarea {
 }
 
 input[name="apikey"] {
-  width: 93%;
+  width: 50%;
 }
 
 #prev, input[type="submit"] {
@@ -50,8 +61,8 @@ input[name="apikey"] {
 }
 
 input[type="submit"] {
-  background: #aaa;
-  color: rgba(255, 255, 255, 1);
+  background: #FFA500;
+  color: #191919;
   font-weight: bold;
   text-transform: uppercase;
 }
@@ -69,6 +80,52 @@ input[type="submit"] {
   padding: 10px 15px 10px 15px;
 }
 
-.api_key {
+.api_key, .controller-container {
   margin: 25px;
+  margin-left: 30%;
 }
+
+@media screen and (max-width: 4000px) {
+  .llmbox {
+    width: 50%;
+    margin: 0 auto;
+  }
+
+  input[name="apikey"] {
+    width: 50%;
+    text-align: center;
+  }
+
+  #prev, input[type="submit"] {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .llmbox {
+    width: calc(100vw - 100px);
+    margin-left: 25px;
+  }
+
+  .api_key {
+    margin: 25px;
+  }
+
+  .controller-container {
+    margin: 0;
+    margin-bottom: 25px;
+  }
+
+  input[name="apikey"] {
+    width: calc(100vw - 100px);
+  }
+
+  .controller {
+    font-size: 16px;
+  }
+
+  #prev, input[type="submit"] {
+    width: 100%;
+  }
+}
+
