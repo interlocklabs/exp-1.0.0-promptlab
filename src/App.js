@@ -10,12 +10,14 @@ posthog.init(`${process.env.REACT_APP_POSTHOG_ID}`, { api_host: 'https://app.pos
 const Child = (props) => {
   const [prompt, setPrompt] = useState("");
   const [result, setResult] = useState("");
-  
+  const [callIsLoading, setCallIsLoading] = useState(false);
+
   const handleChange = (event) => {
     setPrompt(event.target.value);
   };
 
   const handleSubmit = async (event) => {
+    setCallIsLoading(true);
     event.preventDefault();
     posthog.capture('open_ai_call', { "prompt": prompt });
     const config = {
@@ -35,6 +37,7 @@ const Child = (props) => {
       .then((response) => {
         const data = response.data;
         const llm_result = data.choices[0].text;
+        setCallIsLoading(false);
         setResult(llm_result);
         props.res(llm_result);
       })
@@ -63,7 +66,10 @@ const Child = (props) => {
     </form>
     <div>
       <h2>Result</h2>
-      <p className="res">{result === "" ? "Waiting for result..." : result}</p>
+      <p className="res">
+        {callIsLoading ? "Loading..." : ""}
+        {result ? result : ""}
+      </p>
     </div>
     <h2>Most recent output: </h2>
     <p className="res">{props.prev === "" ? "No calls have been executed." : props.prev}</p>
