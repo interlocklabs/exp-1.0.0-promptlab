@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import axios from 'axios';
-import ReactGA from "react-ga4";
 
 import './App.css';
-
-ReactGA.initialize(`${process.env.REACT_APP_GA_TRACKING_ID}}`);
 
 const Child = (props) => {
   const [prompt, setPrompt] = useState("");
@@ -36,10 +33,6 @@ const Child = (props) => {
         const llm_result = data.choices[0].text;
         setResult(llm_result);
         props.res(llm_result);
-        ReactGA.event({
-          category: "OPENAI_API_CALLED",
-          action: "BUTTON_CLICKED_OPENAI"
-        });
       })
       .catch((error) => {
         console.log(error);
