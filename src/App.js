@@ -26,7 +26,7 @@ const Child = (props) => {
       prompt: prompt,
       model: 'gpt-3.5-turbo',
       temperature: 0,
-      max_tokens: 2048,
+      max_tokens: 400,
     }
     const url = 'https://api.openai.com/v1/completions'
     axios.post(url, data, config)
