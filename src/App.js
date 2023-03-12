@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import axios, {isCancel, AxiosError} from 'axios';
+import ReactGA from "react-ga4";
+
 import './App.css';
+
+ReactGA.initialize(`${process.env.REACT_APP_GA_TRACKING_ID}}`);
 
 const Child = (props) => {
   const [prompt, setPrompt] = useState("");
@@ -22,7 +26,7 @@ const Child = (props) => {
       prompt: prompt,
       model: 'text-davinci-003',
       temperature: 0,
-      max_tokens: 2048
+      max_tokens: 2048,
     }
     const url = 'https://api.openai.com/v1/completions'
     axios.post(url, data, config)
@@ -31,6 +35,10 @@ const Child = (props) => {
         const llm_result = data.choices[0].text;
         setResult(llm_result);
         props.res(llm_result);
+        ReactGA.event({
+          category: "OPENAI_API_CALLED",
+          action: "BUTTON_CLICKED_OPENAI"
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -103,7 +111,7 @@ const App = () => {
     children.push(<Child key={i} number={i} prev={lastResult} res={setLastResult}  API_key={API_key} />);
   };
 
-  // setChildLiterals(children);
+  ReactGA.send({ hitType: "pageview", page: "/prompt-lab", title: "v1-j-s-pb" });
 
   return (
     <div>
