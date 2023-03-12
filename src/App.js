@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios, {isCancel, AxiosError} from 'axios';
+import axios from 'axios';
 import ReactGA from "react-ga4";
 
 import './App.css';
@@ -43,7 +43,7 @@ const Child = (props) => {
       .catch((error) => {
         console.log(error);
       });
-    console.log('DONE');
+      console.log('DONE');
   };
 
   const handlePrev = (event) => {
