@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import TextareaAutosize from 'react-textarea-autosize';
 import axios from 'axios';
+import posthog from 'posthog-js'
 
+import TextareaAutosize from 'react-textarea-autosize';
 import './App.css';
+
+posthog.init(`${process.env.REACT_APP_POSTHOG_ID}`, { api_host: 'https://app.posthog.com' });
 
 const Child = (props) => {
   const [prompt, setPrompt] = useState("");
@@ -14,6 +17,7 @@ const Child = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    posthog.capture('open_ai_call', { "prompt": prompt });
     const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -35,7 +39,8 @@ const Child = (props) => {
         props.res(llm_result);
       })
       .catch((error) => {
-        console.log(error);
+        alert(error.toString());
+        posthog.capture('open_ai_error', { "error": error.toString() });
       });
       console.log('DONE');
   };
@@ -97,11 +102,13 @@ const App = () => {
 
   const addLlmBox = (event) => {
     setNumChildren(numChildren + 1);
+    posthog.capture('box_added');
   }
 
   const remLlmBox = (event) => {
     if (numChildren <= 1) return;
     setNumChildren(numChildren - 1);
+    posthog.capture('box_removed');
   }
 
   let children = [];
@@ -135,7 +142,7 @@ const App = () => {
           </div>
           <label>
             <h2>OpenAI API Key:</h2>
-            <input name="apikey" value={API_key} onChange={handleKeyChange} />
+            <input className="ph-no-capture" name="apikey" value={API_key} onChange={handleKeyChange} />
           </label>
         </div>
         <Parent addFn={addLlmBox} remFn={remLlmBox} >
