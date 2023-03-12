@@ -1,9 +1,4 @@
-/* top right bottom left */
-
-.bodyWrapper {
-  padding-top: 70px;
-}
-
+/* styles */
 .controller {
   padding: 14px 20px 14px 20px;
   border: 1px solid rgba(204, 204, 204, .8);
@@ -29,9 +24,8 @@
   font-weight: bold;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
+.bodyWrapper {
+  padding-top: 70px;
 }
 
 #prev, .textarea, input[type="submit"], input[name="apikey"] {
@@ -50,14 +44,6 @@ input[type="submit"] {
   text-transform: uppercase;
 }
 
-.llmbox:first-child {
-  margin-top: 25px;
-}
-
-.llmbox:last-child {
-  margin-bottom: 225px;
-}
-
 .res {
   outline: none;
   border: 2px solid #ccc;
@@ -67,21 +53,35 @@ input[type="submit"] {
   padding: 10px 15px 10px 15px;
 }
 
-.linkbox {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 a:link, a:active, a:after, a:hover, a:visited {
   text-decoration: none;
   color: #191919;
   font-weight: bold;
 }
 
+/* structure */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
 li {
   margin-bottom: 5px;
   line-height: 1.75;
+}
+
+.llmbox:first-child {
+  margin-top: 25px;
+}
+
+.llmbox:last-child {
+  margin-bottom: 225px;
+}
+
+.linkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #contact {
@@ -130,6 +130,7 @@ input[name="apikey"] {
   margin-top: 10px;
 }
 
+/* media queries */
 @media screen and (max-width: 4000px) {
   .llmbox {
     width: 30%;
