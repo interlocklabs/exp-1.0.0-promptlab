@@ -1,12 +1,20 @@
 /* top right bottom left */
 
+.bodyWrapper {
+  padding-top: 70px;
+}
+
 .controller {
   padding: 14px 20px 14px 20px;
-  margin: 10px;
-  margin-left: 25px;
   border: 1px solid rgba(204, 204, 204, .8);
   border-radius: 15px;
   font-size: 20px;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
 }
 
 .add {
@@ -19,17 +27,6 @@
   background: #ff9478;
   color: #191919;
   font-weight: bold;
-}
-
-.llmbox {
-  display: flex;
-  flex-direction: column;
-  width: 50%;
-  border: 2px solid #ccc;
-  border-radius: 15px;
-  margin-top: 25px;
-  margin-left: 25px;
-  padding: 20px
 }
 
 form {
@@ -46,25 +43,15 @@ form {
   padding: 10px 15px 10px 15px;
 }
 
-.textarea {
-  width: 93%;
-  /* resize: vertical; */
-}
-
-input[name="apikey"] {
-  width: 50%;
-}
-
-#prev, input[type="submit"] {
-  width: 50%;
-  margin-top: 10px;
-}
-
 input[type="submit"] {
   background: #FFA500;
   color: #191919;
   font-weight: bold;
   text-transform: uppercase;
+}
+
+.llmbox:first-child {
+  margin-top: 25px;
 }
 
 .llmbox:last-child {
@@ -80,44 +67,132 @@ input[type="submit"] {
   padding: 10px 15px 10px 15px;
 }
 
+.linkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+a:link, a:active, a:after, a:hover, a:visited {
+  text-decoration: none;
+  color: #191919;
+  font-weight: bold;
+}
+
+li {
+  margin-bottom: 5px;
+  line-height: 1.2;
+}
+
+#contact {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 40px;
+  position: fixed;
+  border-bottom: 2px solid #ccc;
+  background: #FFA500;
+}
+
+.controller-container {
+  display: flex;
+  gap: 25px;
+}
+
 .api_key, .controller-container {
-  margin: 25px;
   margin-left: 30%;
+  width: 40%;
+}
+
+.llmbox {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  border: 2px solid #ccc;
+  border-radius: 15px;
+  padding: 20px;
+}
+
+input[name="apikey"] {
+  width: 100%;
+  margin-bottom: 25px;
+}
+
+.textarea {
+  width: calc(100% - 34px);
+}
+
+#prev, input[type="submit"] {
+  width: 50%;
+  margin-top: 10px;
 }
 
 @media screen and (max-width: 4000px) {
   .llmbox {
-    width: 50%;
+    width: 30%;
     margin: 0 auto;
-  }
-
-  input[name="apikey"] {
-    width: 50%;
-    text-align: center;
-  }
-
-  #prev, input[type="submit"] {
-    width: 100%;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .llmbox {
-    width: calc(100vw - 100px);
-    margin-left: 25px;
-  }
-
-  .api_key {
-    margin: 25px;
-  }
-
-  .controller-container {
-    margin: 0;
     margin-bottom: 25px;
   }
 
   input[name="apikey"] {
+    width: 60%;
+  }
+
+  #prev, input[type="submit"] {
+    width: 40%;
+  }
+}
+
+@media screen and (max-width: 1400px) {
+  .llmbox {
+    width: 50%;
+    margin-bottom: 25px;
+  }
+
+  input[name="apikey"] {
+    width: 100%;
+  }
+
+  #prev, input[type="submit"] {
+    width: 60%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .bodyWrapper {
+    padding-top: 40px;
+  }
+
+  li {
+    margin-bottom: 5px;
+    line-height: 1.5;
+  }
+
+  #contact {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .llmbox {
     width: calc(100vw - 100px);
+    margin-bottom: 15px;
+  }
+
+  .api_key, .controller-container {
+    width: calc(100% - 50px);
+    margin: 25px;
+  }
+
+  .controller-container {
+    gap: 10px;
+  }
+
+  input[name="apikey"] {
+    width: calc(100vw - 100px);
+    margin-bottom: 10px;
   }
 
   .controller {
