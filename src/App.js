@@ -122,13 +122,13 @@ const App = () => {
   return (
     <div>
       <div id="contact">
-        <a className="linkbox" href="#"><img className="icon" src="gh.png" />GitHub</a>
+        <a className="linkbox" href="https://github.com/interlocklabs/promptlab"><img className="icon" src="gh.png" />GitHub</a>
         <a className="linkbox" href="mailto:me+promptlab@shivan.sh"><img className="icon" src="us.png" />Contact Us</a>
       </div>
       <div className="bodyWrapper">
         <div className="api_key">
           <div id="instructions">
-            <h2 onClick={hideInstructions}>Instructions (click/tap to hide)</h2>
+            <h2 onClick={hideInstructions}>Instructions <u>(click/tap to hide)</u></h2>
             <div id="instructions-content" style={{display: instructions ? "block" : "none"}}>
               <p>To use this tool:</p>
               <ol>
