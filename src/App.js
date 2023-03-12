@@ -24,7 +24,7 @@ const Child = (props) => {
     }
     const data = {
       prompt: prompt,
-      model: 'gpt-3.5-turbo',
+      model: 'text-curie-001',
       temperature: 0,
       max_tokens: 400,
     }
