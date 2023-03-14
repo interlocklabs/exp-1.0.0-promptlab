@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import posthog from 'posthog-js'
-
 import TextareaAutosize from 'react-textarea-autosize';
 import './App.css';
 
@@ -11,41 +12,59 @@ const Child = (props) => {
   const [prompt, setPrompt] = useState("");
   const [result, setResult] = useState("");
   const [callIsLoading, setCallIsLoading] = useState(false);
-
   const handleChange = (event) => {
     setPrompt(event.target.value);
   };
+
+  const display_invalid_key_toast = () => {
+    toast.error('Please input a valid OpenAI API key.', {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  }
 
   const handleSubmit = async (event) => {
     setCallIsLoading(true);
     event.preventDefault();
     posthog.capture('open_ai_call', { "prompt": prompt });
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${props.API_key}`
+    if(props.API_key === '') {
+      display_invalid_key_toast();
+      posthog.capture('empty_api_key');
+    }
+    else{
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${props.API_key}`
+        }
       }
+      const data = {
+        prompt: prompt,
+        model: 'text-curie-001',
+        temperature: 0.8,
+        max_tokens: 400,
+      }
+      const url = 'https://api.openai.com/v1/completions'
+      axios.post(url, data, config)
+        .then((response) => {
+          const data = response.data;
+          const llm_result = data.choices[0].text;
+          setCallIsLoading(false);
+          setResult(llm_result);
+          props.res(llm_result);
+        })
+        .catch((error) => {
+          display_invalid_key_toast();
+          posthog.capture('open_ai_error', { "error": error.toString() });
+        });
+        console.log('DONE');
     }
-    const data = {
-      prompt: prompt,
-      model: 'text-curie-001',
-      temperature: 0.8,
-      max_tokens: 400,
-    }
-    const url = 'https://api.openai.com/v1/completions'
-    axios.post(url, data, config)
-      .then((response) => {
-        const data = response.data;
-        const llm_result = data.choices[0].text;
-        setCallIsLoading(false);
-        setResult(llm_result);
-        props.res(llm_result);
-      })
-      .catch((error) => {
-        alert(error.toString());
-        posthog.capture('open_ai_error', { "error": error.toString() });
-      });
-      console.log('DONE');
   };
 
   const handlePrev = (event) => {
@@ -155,6 +174,7 @@ const App = () => {
           {children}
         </Parent>
       </div>
+      <ToastContainer />
     </div>
   );
 }
