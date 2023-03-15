@@ -71,6 +71,7 @@ const Child = (props) => {
           setCallIsLoading(false);
           setResult(llm_result);
           props.res(llm_result);
+          posthog.capture('open_ai_success', { "result": llm_result });
         })
         .catch((error) => {
           displayInvalidKeyToast();
@@ -186,7 +187,7 @@ const App = () => {
   const remLlmBox = (event) => {
     if (numChildren <= 1) return;
     setNumChildren(numChildren - 1);
-    posthog.capture('box_removed');
+    posthog.capture('box_removed', {'box_number': numChildren});
   }
 
   let children = [];
