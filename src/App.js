@@ -58,10 +58,11 @@ const Child = (props) => {
         temperature: 0.8,
         max_tokens: 400,
       }
-      const url = 'https://api.openai.com/v1/completions'
+      const url = 'https://api.openai.com/v1/completions';
       axios.post(url, data, config)
         .then((response) => {
-          if (props.number+1 >= 2 && !props.hasAskedForEmail) {
+          // If this is second exec in first LLM call or LLM Call #2, ask for email
+          if ((props.numCalls>=1 || props.number+1 >= 2) && !props.hasAskedForEmail) {
             props.setHasAskedForEmail(true);
             askForEmail();
           }
@@ -76,6 +77,7 @@ const Child = (props) => {
           posthog.capture('open_ai_error', { "error": error.toString() });
         });
         console.log('DONE');
+      props.setNumCalls(props.numCalls + 1);
     }
   };
 
@@ -126,6 +128,7 @@ const Parent = (props) => {
 
 const App = () => {
   const [numChildren, setNumChildren] = useState(1);
+  const [numCalls, setNumCalls] = useState(0);
   const [lastResult, setLastResult] = useState("");
   const [API_key , setAPI_key] = useState("");
   const [instructions, setInstructions] = useState(true);
@@ -148,6 +151,7 @@ const App = () => {
 
   const handleEmailSubmit = (event) => {
     event.preventDefault();
+    console.log('Email submitted:', email)
     const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSdxq6sfyh5E0yG94x7S1_gl9w2v17eBxafpt6cJWNxnHtD38A/formResponse';
     const formData = new FormData();
     formData.append('entry.2112444487', email);
@@ -161,12 +165,22 @@ const App = () => {
       });
 
     setIsRodalVisible(false);
+    toast.success('Email submitted!', {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
     posthog.capture('email submitted', {'email': email});
   }
 
   const addLlmBox = (event) => {
     setNumChildren(numChildren + 1);
-    posthog.capture('box_added');
+    posthog.capture('box_added', {'box_number': numChildren});
   }
 
   const remLlmBox = (event) => {
@@ -178,10 +192,13 @@ const App = () => {
   let children = [];
 
   for (var i = 0; i < numChildren; i += 1) {
-    children.push(<Child key={i} number={i} prev={lastResult} res={setLastResult}  API_key={API_key} hasAskedForEmail={hasAskedForEmail} setHasAskedForEmail={setHasAskedForEmail} setIsRodalVisible={setIsRodalVisible}/>);
+    children.push(<Child key={i} number={i} prev={lastResult} res={setLastResult}  API_key={API_key} hasAskedForEmail={hasAskedForEmail} setHasAskedForEmail={setHasAskedForEmail} setIsRodalVisible={setIsRodalVisible} numCalls={numCalls} setNumCalls={setNumCalls}/>);
   };
 
-  const onCloseModal = () => setIsRodalVisible(false);
+  const onCloseModal = () => {
+    setIsRodalVisible(false);
+    posthog.capture('email modal closed', { 'email': email });
+  }
 
   return (
     <div>
@@ -221,10 +238,10 @@ const App = () => {
         <form onSubmit={handleEmailSubmit}>
           <label>
             <p>Hey! We noticed you're liking the app. Could we email you and ask for your feedback? Please leave your email if so: </p>
-            <input name="email" value={email} onChange={handleEmailChange} />
+            <input placeholder="your@email.com" name="email" value={email} onChange={handleEmailChange} />
           </label>
 
-          <input type="submit" value="Submit" />
+          <input type="submit" name="emailSubmit" value="Submit" />
         </form>
       </Modal>
 

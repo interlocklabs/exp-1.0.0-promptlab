@@ -6,6 +6,15 @@
   font-size: 20px;
 }
 
+form {
+
+  -webkit-box-sizing: content-box ;
+
+  -moz-box-sizing: content-box ;
+
+  box-sizing: content-box;
+}
+
 .icon {
   width: 20px;
   height: 20px;
@@ -28,7 +37,7 @@
   padding-top: 70px;
 }
 
-#prev, .textarea, input[type="submit"], input[name="apikey"], input[name="email"] {
+#prev, .textarea, input[type="submit"], input[name="apikey"], input[name="email"], input[name="emailSubmit"] {
   outline: none;
   border: 2px solid #ccc;
   border-radius: 5px;
@@ -124,6 +133,18 @@ input[name="apikey"] {
 input[name="email"] {
   width: 100%;
   margin-bottom: 25px;
+  box-sizing: border-box;
+}
+
+input[name="emailSubmit"] {
+  width: 110px;
+  text-align: center;
+  margin-bottom: 25px;
+  box-sizing: border-box;
+  background: #FFA500;
+  color: #191919;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 .textarea {
@@ -145,10 +166,6 @@ input[name="email"] {
 
   input[name="apikey"] {
     width: 60%;
-  }
-
-  input[name="email"] {
-    width: 95%;
   }
 
   #prev, input[type="submit"] {
