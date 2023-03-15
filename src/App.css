@@ -28,7 +28,7 @@
   padding-top: 70px;
 }
 
-#prev, .textarea, input[type="submit"], input[name="apikey"] {
+#prev, .textarea, input[type="submit"], input[name="apikey"], input[name="email"] {
   outline: none;
   border: 2px solid #ccc;
   border-radius: 5px;
@@ -121,6 +121,11 @@ input[name="apikey"] {
   margin-bottom: 25px;
 }
 
+input[name="email"] {
+  width: 100%;
+  margin-bottom: 25px;
+}
+
 .textarea {
   width: calc(100% - 34px);
 }
@@ -140,6 +145,10 @@ input[name="apikey"] {
 
   input[name="apikey"] {
     width: 60%;
+  }
+
+  input[name="email"] {
+    width: 95%;
   }
 
   #prev, input[type="submit"] {

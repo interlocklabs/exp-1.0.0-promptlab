@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'react-responsive-modal/styles.css';
+import { Modal } from 'react-responsive-modal';
+
+
 import axios from 'axios';
 import posthog from 'posthog-js'
 import TextareaAutosize from 'react-textarea-autosize';
@@ -16,7 +20,7 @@ const Child = (props) => {
     setPrompt(event.target.value);
   };
 
-  const display_invalid_key_toast = () => {
+  const displayInvalidKeyToast = () => {
     toast.error('Please input a valid OpenAI API key.', {
       position: "top-center",
       autoClose: 5000,
@@ -29,12 +33,16 @@ const Child = (props) => {
     });
   }
 
+  const askForEmail = () => {
+    props.setIsRodalVisible(true);
+  }
+
   const handleSubmit = async (event) => {
     setCallIsLoading(true);
     event.preventDefault();
-    posthog.capture('open_ai_call', { "prompt": prompt });
+    posthog.capture('open_ai_call', { "prompt": prompt, "box_number": props.number+1 });
     if(props.API_key === '') {
-      display_invalid_key_toast();
+      displayInvalidKeyToast();
       posthog.capture('empty_api_key');
     }
     else{
@@ -53,6 +61,10 @@ const Child = (props) => {
       const url = 'https://api.openai.com/v1/completions'
       axios.post(url, data, config)
         .then((response) => {
+          if (props.number+1 >= 2 && !props.hasAskedForEmail) {
+            props.setHasAskedForEmail(true);
+            askForEmail();
+          }
           const data = response.data;
           const llm_result = data.choices[0].text;
           setCallIsLoading(false);
@@ -60,7 +72,7 @@ const Child = (props) => {
           props.res(llm_result);
         })
         .catch((error) => {
-          display_invalid_key_toast();
+          displayInvalidKeyToast();
           posthog.capture('open_ai_error', { "error": error.toString() });
         });
         console.log('DONE');
@@ -71,6 +83,7 @@ const Child = (props) => {
     event.preventDefault();
     setPrompt(prompt + props.prev);
   }
+
 
   return (<div className="llmbox">
     <h1>LLM Call #{props.number + 1}</h1>
@@ -116,6 +129,10 @@ const App = () => {
   const [lastResult, setLastResult] = useState("");
   const [API_key , setAPI_key] = useState("");
   const [instructions, setInstructions] = useState(true);
+  const [hasAskedForEmail, setHasAskedForEmail] = useState(false);
+  const [isRodalVisible, setIsRodalVisible] = useState(false);
+  const [email, setEmail] = useState("");
+
 
   const hideInstructions = (event) => {
     setInstructions(!instructions);
@@ -124,6 +141,28 @@ const App = () => {
   const handleKeyChange = (event) => {
     setAPI_key(event.target.value);
   };
+
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  }
+
+  const handleEmailSubmit = (event) => {
+    event.preventDefault();
+    const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSdxq6sfyh5E0yG94x7S1_gl9w2v17eBxafpt6cJWNxnHtD38A/formResponse';
+    const formData = new FormData();
+    formData.append('entry.2112444487', email);
+
+    axios.post(formUrl, formData)
+      .then((response) => {
+        console.log('Email submitted successfully!');
+      })
+      .catch((error) => {
+        console.error('Error submitting email:', error);
+      });
+
+    setIsRodalVisible(false);
+    posthog.capture('email submitted', {'email': email});
+  }
 
   const addLlmBox = (event) => {
     setNumChildren(numChildren + 1);
@@ -139,8 +178,10 @@ const App = () => {
   let children = [];
 
   for (var i = 0; i < numChildren; i += 1) {
-    children.push(<Child key={i} number={i} prev={lastResult} res={setLastResult}  API_key={API_key} />);
+    children.push(<Child key={i} number={i} prev={lastResult} res={setLastResult}  API_key={API_key} hasAskedForEmail={hasAskedForEmail} setHasAskedForEmail={setHasAskedForEmail} setIsRodalVisible={setIsRodalVisible}/>);
   };
+
+  const onCloseModal = () => setIsRodalVisible(false);
 
   return (
     <div>
@@ -174,6 +215,19 @@ const App = () => {
           {children}
         </Parent>
       </div>
+
+      <Modal open={isRodalVisible} onClose={onCloseModal} center>
+        <h2>Can we get your feedback?</h2>
+        <form onSubmit={handleEmailSubmit}>
+          <label>
+            <p>Hey! We noticed you're liking the app. Could we email you and ask for your feedback? Please leave your email if so: </p>
+            <input name="email" value={email} onChange={handleEmailChange} />
+          </label>
+
+          <input type="submit" value="Submit" />
+        </form>
+      </Modal>
+
       <ToastContainer />
     </div>
   );
